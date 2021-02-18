@@ -1,6 +1,4 @@
-<img src="https://github.com/CardinalKit/CardinalKit/blob/master/CardinalKit-Web-Assets/header.png?raw=true" alt="cardinalkit logo">
-
-# CardinalKit SMART-on-FHIR Provider Dashboard
+# SMART on FHIR Provider Dashboard
 ---
 
 ## Testing the app with the SMART Launcher
