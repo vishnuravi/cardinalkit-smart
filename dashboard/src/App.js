@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import FHIR from 'fhirclient';
 import { FHIRClientProvider } from './context/FHIRClientContext';
 import { PatientProvider } from './context/PatientContext';
+import { UserProvider } from './context/UserContext';
 import Dashboard from './components/Dashboard';
 
 const App = () => {
@@ -13,7 +14,7 @@ const App = () => {
       const client = await FHIR.oauth2
         .init({
           clientId: 'cardinalkit_dashboard',
-          scope: 'patient/*.read'
+          scope: 'launch/patient openid profile'
         });
       setFhirClient(client);
     };
@@ -23,9 +24,11 @@ const App = () => {
   return (
     fhirClient ?
       <FHIRClientProvider fhirClient={fhirClient}>
-        <PatientProvider>
-          <Dashboard />
-        </PatientProvider>
+        <UserProvider>
+          <PatientProvider>
+            <Dashboard />
+          </PatientProvider>
+        </UserProvider>
       </FHIRClientProvider>
       :
       <div>
