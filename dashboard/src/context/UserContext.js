@@ -14,7 +14,6 @@ export const UserProvider = ({ children }) => {
     useEffect(async () => {
         const currentUser = await fhirClient.user.read();
         setUser(currentUser);
-        console.log(currentUser);
     }, [fhirClient]);
 
     return user ?
