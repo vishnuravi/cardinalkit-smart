@@ -1,15 +1,8 @@
 import Firebase from '../firebase';
 
 // Get all surveys for a particular user
-export const getSurveys = (userID) => {
+export const getSurveys = async (userID) => {
     const firebase = new Firebase();
-    return firebase.surveys(userID).get()
-        .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                console.log(doc.id, " => ", doc.data());
-            });
-        }).catch((error) => {
-            console.log("Error getting document: ", error);
-            return error;
-        });
+    const snapshot = await firebase.surveys(userID).get();
+    return snapshot.docs.map(doc => doc.data());
 }
