@@ -10,7 +10,7 @@ const SurveyTable = ({ userID }) => {
         setSurveys(surveyList);
     }, [])
 
-    return surveys && surveys.length ? surveys.map((survey, i) => <h1>{survey.payload.identifier}</h1>) : null;
+    return surveys && surveys.length ? surveys.map((survey) => <h1>{survey.payload.identifier}</h1>) : null;
 };
 
 export default SurveyTable;
