@@ -1,4 +1,5 @@
 import Header from './Header';
+import Footer from './Footer';
 import PatientData from './PatientData';
 
 const Dashboard = () => {
@@ -6,6 +7,7 @@ const Dashboard = () => {
         <>
             <Header />
             <PatientData />
+            <Footer />
         </>
     );
 }

@@ -8,6 +8,7 @@ import {
     AllergiesVisualizer,
     ConditionsVisualizer,
     MedicationsVisualizer,
+    ObservationsVisualizer
 } from 'fhir-visualizers';
 
 
@@ -42,6 +43,7 @@ const PatientData = () => {
             <ConditionsVisualizer rows={filterResource('Condition')} />
             <MedicationsVisualizer rows={filterResource('MedicationRequest')} />
             <AllergiesVisualizer rows={filterResource('AllergyIntolerance')} />
+            <ObservationsVisualizer rows={filterResource('Observations')} />
         </Container>
     );
 };

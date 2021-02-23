@@ -1,5 +1,9 @@
+/**
+ * Helper functions for use with the FHIR client. 
+ */
+
+
 export const getAllResources = async (fhirClient) => {
-    // Get all available resources for the current patient
     const resourceBundle = await fhirClient.request(`/Patient/${fhirClient.patient.id}/$everything`, 
     {
         pageLimit: 0,
@@ -9,8 +13,7 @@ export const getAllResources = async (fhirClient) => {
     return resourceBundle;
 };
 
-export const getFhirRelease = async (fhirClient) => {
-    // Returns 2 for DSTU2, 3 for STU3, 4 for R4, or 0 if the version is not known
-    const fhirRelease = await fhirClient.getFhirRelease();
-    return fhirRelease;
+export const getAccessToken = (fhirClient) => {
+    const header = fhirClient.getAuthorizationHeader();
+    return header.replace("Bearer ", "");
 };

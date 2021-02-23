@@ -9,29 +9,27 @@ export const UserProvider = ({ children }) => {
 
     const fhirClient = useFHIRClient();
     const [user, setUser] = useState(null);
-    const [idToken, setIdToken] = useState(null);
 
     useEffect(() => {
+        
+        // get the current user resource from the FHIR server
         async function getUserData() {
             try {
                 const currentUser = await fhirClient.user.read();
                 if (currentUser) {
                     setUser(currentUser);
                 }
-                const idToken = await fhirClient.getIdToken();
-                setIdToken(idToken);
             } catch (error) {
                 console.log(error);
             }
         }
         getUserData();
-        console.log(idToken);
+
     }, [fhirClient]);
 
     return (
-        user &&
         <UserContext.Provider value={user}>
             {children}
         </UserContext.Provider>
-        );
+    );
 };
