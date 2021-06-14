@@ -1,14 +1,6 @@
-import { useEffect, useState } from 'react';
-import { Card } from 'react-bootstrap';
+import Card from 'react-bootstrap/Card';
 
-const MedicationsCard = ({ data }) => {
-
-    const [medicationList, setMedicationList] = useState();
-
-    useEffect(() => {
-        const medications = data.medications;
-        setMedicationList(medications);
-    }, [data])
+const MedicationsCard = ({ medicationList }) => {
 
     return (
         <Card className="lead shadow">
