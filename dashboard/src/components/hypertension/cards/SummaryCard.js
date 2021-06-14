@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import { ArrowUpCircle, ArrowDownCircle } from 'react-bootstrap-icons';
+import { useData } from '../DataContext';
+import { thresholds } from '../constants/constants';
 
-const SummaryCard = ({ bpData, thresholds }) => {
+const SummaryCard = () => {
 
+    const bpData = useData().bp_measurements;
     const [percentHigh, setPercentHigh] = useState(0);
     const [percentLow, setPercentLow] = useState(0);
 

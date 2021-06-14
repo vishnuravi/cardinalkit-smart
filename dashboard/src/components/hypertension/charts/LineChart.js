@@ -3,9 +3,14 @@ import { Line } from 'react-chartjs-2';
 import moment from 'moment';
 import Card from 'react-bootstrap/Card';
 import * as zoom from 'chartjs-plugin-zoom';
+import { useData } from '../DataContext';
+import { bpUnit } from "../constants/constants";
 
-const LineChart = ({ bpData, adherence, bpUnit }) => {
+const LineChart = () => {
 
+    const dataSource = useData();
+    const bpData = dataSource.bp_measurements;
+    const adherence = dataSource.adherence_log;
     const [systolicReadings, setSystolicReadings] = useState();
     const [diastolicReadings, setDiastolicReadings] = useState();
     const [adherenceLog, setAdherenceLog] = useState();

@@ -1,6 +1,9 @@
 import Card from 'react-bootstrap/Card';
+import { useData } from '../DataContext';
 
-const MedicationsCard = ({ medicationList }) => {
+const MedicationsCard = () => {
+
+    const medicationList = useData().medications;
 
     return (
         <Card className="lead shadow">

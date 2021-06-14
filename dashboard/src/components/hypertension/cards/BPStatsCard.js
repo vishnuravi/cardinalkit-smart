@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import { ArrowUpCircle, ArrowDownCircle } from 'react-bootstrap-icons';
+import { useData } from '../DataContext';
+import { thresholds, bpUnit } from '../constants/constants';
 
-const BPStatsCard = ({ bpData, type, bpUnit, thresholds }) => {
+const BPStatsCard = ({ type }) => {
 
+    const bpData = useData().bp_measurements;
     const high = thresholds[type].high;
     const low = thresholds[type].low;
     const unit = bpUnit;

@@ -1,7 +1,11 @@
 import Card from 'react-bootstrap/Card';
 import { Gear } from 'react-bootstrap-icons';
+import { useData } from '../DataContext';
 
-const LabsCard = ({ labs }) => {
+const LabsCard = () => {
+
+    const labs = useData().labs;
+    
     return (
         <Card className="lead shadow">
             <Card.Body>
