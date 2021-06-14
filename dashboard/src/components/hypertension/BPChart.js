@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Container, Alert, Card, Row, Col, Dropdown, DropdownButton } from 'react-bootstrap';
-import { ArrowUp, ExclamationTriangle, CheckCircle, InfoCircle, ArrowUpCircle, Gear } from 'react-bootstrap-icons';
-import { Line, defaults } from 'react-chartjs-2';
+import { Container, Card, Row, Col, Dropdown, DropdownButton } from 'react-bootstrap';
+import { ArrowUp, ArrowUpCircle, Gear } from 'react-bootstrap-icons';
+import { Line } from 'react-chartjs-2';
 import data from './sample-data.json';
 import { useFHIRClient } from '../../context/FHIRClientContext';
 import moment from 'moment';
@@ -30,12 +30,9 @@ const BPChart = () => {
     const [systolicMin, setSystolicMin] = useState();
     const [systolicMax, setSystolicMax] = useState();
     const [systolicMean, setSystolicMean] = useState();
-
     const [diastolicMin, setDiastolicMin] = useState();
     const [diastolicMax, setDiastolicMax] = useState();
     const [diastolicMean, setDiastolicMean] = useState();
-
-    const [showAlert, setShowAlert] = useState(false);
 
     useEffect(() => {
         // format BP data for display
@@ -152,8 +149,6 @@ const BPChart = () => {
                         <Dropdown.Item eventKey="1">Last 2 weeks</Dropdown.Item>
                         <Dropdown.Item eventKey="2">Last month</Dropdown.Item>
                         <Dropdown.Item eventKey="3">Last 6 months</Dropdown.Item>
-                        <Dropdown.Divider />
-                        <Dropdown.Item eventKey="4">Separated link</Dropdown.Item>
                     </DropdownButton>
                 </Col>
             </Row>
@@ -172,15 +167,7 @@ const BPChart = () => {
             </Row>
 
             <br />
-            <Row>
-                <Col>
-                    {showAlert &&
-                        <Alert variant="warning" className="lead shadow" onClose={() => setShowAlert(false)} dismissible>
-                            <InfoCircle className="mr-2 mb-1" /><strong>{percentUncontrolled}%</strong> of blood pressure readings since the last visit are elevated.
-                        </Alert>
-                    }
-                </Col>
-            </Row>
+
             <Row>
                 <Col>
                     <Card className="lead shadow">
