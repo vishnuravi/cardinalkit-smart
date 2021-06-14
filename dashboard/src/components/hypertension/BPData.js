@@ -11,6 +11,7 @@ import PatientBanner from './PatientBanner';
 import MedicationsCard from './MedicationsCard';
 import LabsCard from './LabsCard';
 import SummaryCard from './SummaryCard';
+import BPStatsCard from './BPStatsCard';
 import Loading from '../Loading';
 
 
@@ -20,6 +21,17 @@ const diastolicHighThreshold = 90;
 const systolicLowThreshold = 90;
 const diastolicLowThreshold = 60;
 const bpUnit = "mmHg";
+
+const thresholds = {
+    systolic: {
+        high: 140,
+        low: 90
+    },
+    diastolic: {
+        high: 90,
+        low: 60
+    }
+}
 
 const BPData = () => {
 
@@ -33,9 +45,6 @@ const BPData = () => {
     const [adherenceLog, setAdherenceLog] = useState();
 
     // stats
-    const [systolicMin, setSystolicMin] = useState(0);
-    const [systolicMax, setSystolicMax] = useState(0);
-    const [systolicMean, setSystolicMean] = useState(0);
     const [diastolicMin, setDiastolicMin] = useState(0);
     const [diastolicMax, setDiastolicMax] = useState(0);
     const [diastolicMean, setDiastolicMean] = useState(0);
@@ -58,18 +67,6 @@ const BPData = () => {
 
                 const adherenceData = result.adherence_log.map(({ date }) => ({ x: new Date(date), y: 0 }));
                 setAdherenceLog(adherenceData);
-
-                // calculate stats
-                const systolicValues = bpData.map(({ systolic }) => systolic);
-                setSystolicMin(Math.min(...systolicValues));
-                setSystolicMax(Math.max(...systolicValues));
-                setSystolicMean(Math.round((systolicValues.reduce((acc, val) => acc + val, 0) / systolicValues.length)));
-
-                const diastolicValues = bpData.map(({ diastolic }) => diastolic);
-                setDiastolicMin(Math.min(...diastolicValues));
-                setDiastolicMax(Math.max(...diastolicValues));
-                setDiastolicMean(Math.round((diastolicValues.reduce((acc, val) => acc + val, 0) / diastolicValues.length)));
-
             }
 
         }
@@ -171,63 +168,23 @@ const BPData = () => {
 
             <Row>
                 <Col>
-                    <SummaryCard bpData={data.bp_measurements}
-                        systolicHighThreshold={systolicHighThreshold}
-                        systolicLowThreshold={systolicLowThreshold}
-                        diastolicHighThreshold={diastolicHighThreshold}
-                        diastolicLowThreshold={diastolicLowThreshold} />
+                    <SummaryCard 
+                        bpData={data.bp_measurements} 
+                        thresholds={thresholds} />
                 </Col>
                 <Col>
-                    <Card className="lead shadow">
-                        <Card.Body>
-                            <Card.Title>Systolic BP</Card.Title>
-                            <Card.Text>
-                                <ul className="list-group">
-                                    <li className={`list-group-item ${((systolicMin <= systolicLowThreshold) || (systolicMin >= systolicHighThreshold)) && 'list-group-item-danger'}`}>
-                                        Min <strong>{systolicMin}</strong> <small>{bpUnit}</small>
-                                        {systolicMin >= systolicHighThreshold && <ArrowUpCircle />}
-                                        {systolicMin <= systolicLowThreshold && <ArrowDownCircle />}
-                                    </li>
-                                    <li className={`list-group-item ${((systolicMax <= systolicLowThreshold) || (systolicMax >= systolicHighThreshold)) && 'list-group-item-danger'}`}>
-                                        Max <strong>{systolicMax}</strong> <small>{bpUnit}</small>
-                                        {systolicMax >= systolicHighThreshold && <ArrowUpCircle />}
-                                        {systolicMax <= systolicLowThreshold && <ArrowDownCircle />}
-                                    </li>
-                                    <li className={`list-group-item ${((systolicMean <= systolicLowThreshold) || (systolicMean >= systolicHighThreshold)) && 'list-group-item-danger'}`}>
-                                        Avg <strong>{systolicMean}</strong> <small>{bpUnit}</small>
-                                        {systolicMean >= systolicHighThreshold && <ArrowUpCircle />}
-                                        {systolicMean <= systolicLowThreshold && <ArrowDownCircle />}
-                                    </li>
-                                </ul>
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
+                    <BPStatsCard 
+                        bpData={data.bp_measurements}
+                        type={"systolic"}
+                        bpUnit={"mmHg"}
+                        thresholds={thresholds} />
                 </Col>
                 <Col>
-                    <Card className="lead shadow">
-                        <Card.Body>
-                            <Card.Title>Diastolic BP</Card.Title>
-                            <Card.Text>
-                                <ul class="list-group">
-                                    <li className={`list-group-item ${((diastolicMin < diastolicLowThreshold) || (diastolicMin > diastolicHighThreshold)) && 'list-group-item-danger'}`}>
-                                        Min <strong>{diastolicMin}</strong> <small>{bpUnit}</small>
-                                        {diastolicMin > diastolicHighThreshold && <ArrowUpCircle />}
-                                        {diastolicMin < diastolicLowThreshold && <ArrowDownCircle />}
-                                    </li>
-                                    <li className={`list-group-item ${((diastolicMax < diastolicLowThreshold) || (diastolicMax > diastolicHighThreshold)) && 'list-group-item-danger'}`}>
-                                        Max <strong>{diastolicMax}</strong> <small>{bpUnit}</small>
-                                        {diastolicMax > diastolicHighThreshold && <ArrowUpCircle />}
-                                        {diastolicMax < diastolicLowThreshold && <ArrowDownCircle />}
-                                    </li>
-                                    <li className={`list-group-item ${((diastolicMean < diastolicLowThreshold) || (diastolicMean > diastolicHighThreshold)) && 'list-group-item-danger'}`}>
-                                        Avg <strong>{diastolicMean}</strong> <small>{bpUnit}</small>
-                                        {diastolicMean > diastolicHighThreshold && <ArrowUpCircle />}
-                                        {diastolicMean < diastolicLowThreshold && <ArrowDownCircle />}
-                                    </li>
-                                </ul>
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
+                    <BPStatsCard
+                        bpData={data.bp_measurements}
+                        type={"diastolic"}
+                        bpUnit={"mmHg"}
+                        thresholds={thresholds} />
                 </Col>
             </Row>
             <Row className="mt-4">

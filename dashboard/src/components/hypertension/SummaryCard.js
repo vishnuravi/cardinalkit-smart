@@ -2,16 +2,16 @@ import { useState, useEffect } from 'react';
 import Card from 'react-bootstrap/Card';
 import { ArrowUpCircle, ArrowDownCircle } from 'react-bootstrap-icons';
 
-const SummaryCard = ({ bpData, systolicHighThreshold, systolicLowThreshold, diastolicHighThreshold, diastolicLowThreshold }) => {
+const SummaryCard = ({ bpData, thresholds }) => {
 
     const [percentHigh, setPercentHigh] = useState(0);
     const [percentLow, setPercentLow] = useState(0);
 
     useEffect(() => {
 
-        setPercentHigh(Math.round(((bpData.filter(measurement => measurement.systolic >= systolicHighThreshold || measurement.diastolic >= diastolicHighThreshold).length) / bpData.length) * 100));
+        setPercentHigh(Math.round(((bpData.filter(measurement => measurement.systolic >= thresholds.systolic.high || measurement.diastolic >= thresholds.diastolic.high).length) / bpData.length) * 100));
 
-        setPercentLow(Math.round(((bpData.filter(measurement => measurement.systolic <= systolicLowThreshold || measurement.diastolic <= diastolicLowThreshold).length) / bpData.length) * 100));
+        setPercentLow(Math.round(((bpData.filter(measurement => measurement.systolic <= thresholds.systolic.low || measurement.diastolic <= thresholds.diastolic.low).length) / bpData.length) * 100));
 
     }, [bpData]);
 
