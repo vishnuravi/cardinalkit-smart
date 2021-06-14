@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react';
 import Card from 'react-bootstrap/Card';
 import { ArrowUpCircle, ArrowDownCircle } from 'react-bootstrap-icons';
 import { useData } from '../DataContext';
-import { thresholds, bpUnit } from '../constants/constants';
+import { thresholds, bpUnit as unit } from '../constants/constants';
+import { capitalize } from '../utils/utils';
 
 const BPStatsCard = ({ type }) => {
 
     const bpData = useData().bp_measurements;
     const high = thresholds[type].high;
     const low = thresholds[type].low;
-    const unit = bpUnit;
 
     const [min, setMin] = useState(0);
     const [max, setMax] = useState(0);
@@ -25,24 +25,24 @@ const BPStatsCard = ({ type }) => {
     return (
         <Card className="lead shadow">
             <Card.Body>
-                <Card.Title>{type.charAt(0).toUpperCase() + type.slice(1)} BP</Card.Title>
+                <Card.Title>{capitalize(type)} BP</Card.Title>
                 <Card.Text>
                     <ul className="list-group">
-                        <li className={`list-group-item ${((min <= low) || (min >= high)) && 'list-group-item-danger'}`}>
-                            Min <strong>{min}</strong> <small>{unit}</small>
-                            {min >= high && <ArrowUpCircle />}
-                            {min <= low && <ArrowDownCircle />}
-                        </li>
-                        <li className={`list-group-item ${((max <= low) || (max >= high)) && 'list-group-item-danger'}`}>
-                            Max <strong>{max}</strong> <small>{unit}</small>
-                            {max >= high && <ArrowUpCircle />}
-                            {max <= low && <ArrowDownCircle />}
-                        </li>
-                        <li className={`list-group-item ${((mean <= low) || (mean >= high)) && 'list-group-item-danger'}`}>
-                            Avg <strong>{mean}</strong> <small>{unit}</small>
-                            {mean >= high && <ArrowUpCircle />}
-                            {mean <= low && <ArrowDownCircle />}
-                        </li>
+                        {
+                            [
+                                { 'label': 'Min', 'value': min },
+                                { 'label': 'Max', 'value': max },
+                                { 'label': 'Avg', 'value': mean }
+                            ].map((stat) => {
+                                return (
+                                    <li className={`list-group-item ${((stat.value <= low) || (stat.value >= high)) && 'list-group-item-danger'}`}>
+                                        {stat.label} <strong>{stat.value}</strong> <small>{unit}</small>
+                                        {stat.value >= high && <ArrowUpCircle className='ml-1' />}
+                                        {stat.value <= low && <ArrowDownCircle className='ml-1' />}
+                                    </li>
+                                )
+                            })
+                        }
                     </ul>
                 </Card.Text>
             </Card.Body>

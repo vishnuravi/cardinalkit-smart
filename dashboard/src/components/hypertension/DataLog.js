@@ -1,30 +1,18 @@
-import { useState, useEffect } from 'react';
 import CalendarHeatmap from 'react-calendar-heatmap';
 import 'react-calendar-heatmap/dist/styles.css';
 import { Container, Row, Col, Card } from 'react-bootstrap';
-import data from './data/sample-data.json';
-import { useFHIRClient } from '../../context/FHIRClientContext';
 import moment from 'moment';
 import PatientBanner from '../PatientBanner';
 import DataRangeSelector from './ui/DataRangeSelector';
+import { useData } from './DataContext';
 
 /**
  * A demo heatmap calendar component for visualizing medication adherence
  */
 
 const DataLog = () => {
-    const fhirClient = useFHIRClient();
-    const patientId = fhirClient.patient.id;
-    const [logs, setLogs] = useState();
 
-    useEffect(() => {
-        // get medication log data
-        const result = data.filter((patient) => patient.patientId === patientId)[0];
-        if (result) {
-            setLogs(result.bp_measurements);
-        }
-        console.log(logs);
-    }, [fhirClient, patientId]);
+    const logs = useData().bp_measurements;
 
     return (
         <Container className="p-3">
@@ -53,8 +41,8 @@ const DataLog = () => {
                             </Card.Body>
                         </Card>
                     </Col>
-
-                    : <p className="lead">No log data available.</p>}
+                    : 
+                    <p className="lead">No log data available.</p>}
             </Row>
         </Container>
     );
