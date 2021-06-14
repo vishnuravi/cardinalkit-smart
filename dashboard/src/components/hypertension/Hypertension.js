@@ -3,9 +3,6 @@ import DataLog from './DataLog';
 import BPData from './BPData';
 import { DataProvider } from './DataContext';
 
-/**
- * An example dashboard that visualizes useful information for managing hypertension
- */
 export default function Hypertension() {
     return (
         <DataProvider>
@@ -14,7 +11,7 @@ export default function Hypertension() {
                     <Tab eventKey="bpdata" title="BP Data">
                         <BPData />
                     </Tab>
-                    <Tab eventKey="datalog" title="Data Integrity">
+                    <Tab eventKey="datalog" title="Data Log">
                         <DataLog />
                     </Tab>
                 </Tabs>
