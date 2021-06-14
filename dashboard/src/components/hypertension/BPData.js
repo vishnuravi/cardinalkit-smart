@@ -2,11 +2,14 @@ import { useState, useEffect } from 'react';
 import { Container, Card, Row, Col, Dropdown, DropdownButton } from 'react-bootstrap';
 import { ArrowUpCircle, ArrowDownCircle, Gear } from 'react-bootstrap-icons';
 import { Line } from 'react-chartjs-2';
-import data from './sample-data.json';
+import sampleData from './sample-data.json';
 import { useFHIRClient } from '../../context/FHIRClientContext';
 import moment from 'moment';
 import * as zoom from 'chartjs-plugin-zoom';
 import PatientBanner from './PatientBanner';
+
+import MedicationsCard from './MedicationsCard';
+import Loading from '../Loading';
 
 
 // configuration
@@ -20,16 +23,16 @@ const bpUnit = "mmHg";
 const HighArrow = () => <ArrowUpCircle className="m-1" />;
 const LowArrow = () => <ArrowDownCircle className="m-1" />;
 
-const BPChart = () => {
+const BPData = () => {
 
     const fhirClient = useFHIRClient();
     const patientId = fhirClient.patient.id;
 
     // data
+    const [data, setData] = useState();
     const [systolicReadings, setSystolicReadings] = useState();
     const [diastolicReadings, setDiastolicReadings] = useState();
     const [adherenceLog, setAdherenceLog] = useState();
-    const [medicationList, setMedicationList] = useState();
     const [labs, setLabs] = useState();
 
     // stats
@@ -44,12 +47,11 @@ const BPChart = () => {
 
     useEffect(() => {
         // format BP data for display
-        const result = data.filter((patient) => patient.patientId === patientId)[0];
+        const result = sampleData.filter((patient) => patient.patientId === patientId)[0];
+        setData(result);
 
         if (result) {
             const bpData = result.bp_measurements;
-            const medications = result.medications;
-            setMedicationList(medications);
             const labs = result.labs;
             setLabs(labs);
 
@@ -143,7 +145,7 @@ const BPChart = () => {
     }
 
 
-    return (
+    return ( data ?
         <Container className="p-3">
             <Row>
                 <Col>
@@ -259,20 +261,7 @@ const BPChart = () => {
             </Row>
             <Row className="mt-4">
                 <Col>
-                    <Card className="lead shadow">
-                        <Card.Body>
-                            <Card.Title>Current Medications</Card.Title>
-                            <Card.Text>
-                                <ul className="list-group">
-                                    {medicationList ? medicationList.map((medication) => {
-                                        return <li className="list-group-item">{medication.name} <br />
-                                            <small className="text-muted">started on {medication.start_date}</small></li>
-                                    }) :
-                                        <li className="list-group-item">No medications.</li>}
-                                </ul>
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
+                    <MedicationsCard data={data} />
                 </Col>
                 <Col>
                     <Card className="lead shadow">
@@ -297,7 +286,8 @@ const BPChart = () => {
             </Row>
 
         </Container>
+        : <Loading />
     )
 };
 
-export default BPChart;
+export default BPData;
